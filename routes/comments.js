@@ -52,4 +52,26 @@ function isLoggedIn(req, res, next){
     res.redirect("/login");
 }
 
+//Comments edit route
+router.get("/:comment_id/edit", function(req,res){
+    Comment.findById(req.params.comment_id, function(err, foundComment){
+        if(err){
+            res.redirect("back");
+        } else{
+            res.render("comments/edit", {campground_id: req.params.id, comment: foundComment});
+        }
+    });
+});
+
+//Comment Update
+router.put("/:comment_id", function(req, res){
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+        if(err){
+            res.redirect("back");
+        } else{
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    })
+})
+
 module.exports = router;
